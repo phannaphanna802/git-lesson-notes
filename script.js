@@ -1,404 +1,192 @@
-// =================================
-// 1. SELECT HTML ELEMENTS
-// =================================
+// Git Notes: lesson progress, copy buttons, theme toggle and quiz.
 
-const taskForm = document.getElementById("taskForm");
-const taskInput = document.getElementById("taskInput");
-const taskList = document.getElementById("taskList");
+const themeToggle = document.getElementById("themeToggle");
+const toast = document.getElementById("toast");
 
-const totalElement = document.getElementById("total");
-const completedElement = document.getElementById("completedCount");
-const pendingElement = document.getElementById("pending");
-
-const searchInput = document.getElementById("searchInput");
-const filterSelect = document.getElementById("filterSelect");
-const clearAllBtn = document.getElementById("clearAllBtn");
-
-
-// =================================
-// 2. LOAD TASKS FROM LOCAL STORAGE
-// =================================
-
-let tasks = [];
-
-try {
-    const savedTasks = JSON.parse(
-        localStorage.getItem("studentTasks") || "[]"
-    );
-
-    tasks = Array.isArray(savedTasks) ? savedTasks : [];
-} catch (error) {
-    console.error("Unable to load tasks:", error);
+// Restore saved theme.
+if (localStorage.getItem("gitNotesTheme") === "dark") {
+  document.body.classList.add("dark");
+  themeToggle.textContent = "☀";
 }
 
-
-// =================================
-// 3. SAVE TASKS
-// =================================
-
-function saveTasks() {
-
-    localStorage.setItem(
-        "studentTasks",
-        JSON.stringify(tasks)
-    );
-
-}
-
-
-// =================================
-// 4. UPDATE STATISTICS
-// =================================
-
-function updateStats() {
-
-    const total = tasks.length;
-
-    const completed = tasks.filter(
-        task => task.completed
-    ).length;
-
-    const pending = total - completed;
-
-    totalElement.textContent = total;
-
-    completedElement.textContent = completed;
-
-    pendingElement.textContent = pending;
-
-}
-
-
-// =================================
-// 5. DISPLAY TASKS
-// =================================
-
-function renderTasks() {
-
-    taskList.innerHTML = "";
-
-    const searchValue = searchInput.value
-        .trim()
-        .toLowerCase();
-
-    const filterValue = filterSelect.value;
-
-    const filteredTasks = tasks.filter(task => {
-
-        const matchesSearch = task.title
-            .toLowerCase()
-            .includes(searchValue);
-
-        const matchesFilter =
-            filterValue === "all" ||
-            (filterValue === "completed" && task.completed) ||
-            (filterValue === "pending" && !task.completed);
-
-        return matchesSearch && matchesFilter;
-
-    });
-
-    if (filteredTasks.length === 0) {
-
-        const message = document.createElement("p");
-
-        message.className = "empty";
-
-        message.textContent = tasks.length === 0
-            ? "No tasks yet. Add your first task!"
-            : "No matching tasks found.";
-
-        taskList.appendChild(message);
-
-        updateStats();
-
-        return;
-    }
-
-    filteredTasks.forEach(task => {
-
-        // Main task container
-        const taskItem = document.createElement("div");
-
-        taskItem.className = "task";
-
-
-        // Task information
-        const taskInfo = document.createElement("div");
-
-        taskInfo.className = "task-info";
-
-
-        // Checkbox
-        const checkbox = document.createElement("input");
-
-        checkbox.type = "checkbox";
-
-        checkbox.checked = task.completed;
-
-
-        // Task title
-        const title = document.createElement("span");
-
-        title.className = "task-title";
-
-        title.textContent = task.title;
-
-        if (task.completed) {
-
-            title.classList.add("completed");
-
-        }
-
-
-        // Checkbox event
-        checkbox.addEventListener("change", () => {
-
-            toggleTask(task.id);
-
-        });
-
-
-        // Task actions
-        const actions = document.createElement("div");
-
-        actions.className = "task-actions";
-
-
-        // Edit button
-        const editButton = document.createElement("button");
-
-        editButton.textContent = "Edit";
-
-        editButton.className = "edit-btn";
-
-        editButton.addEventListener("click", () => {
-
-            editTask(task.id);
-
-        });
-
-
-        // Delete button
-        const deleteButton = document.createElement("button");
-
-        deleteButton.textContent = "Delete";
-
-        deleteButton.className = "delete-btn";
-
-        deleteButton.addEventListener("click", () => {
-
-            deleteTask(task.id);
-
-        });
-
-
-        // Append elements
-        taskInfo.append(checkbox, title);
-
-        actions.append(editButton, deleteButton);
-
-        taskItem.append(taskInfo, actions);
-
-        taskList.appendChild(taskItem);
-
-    });
-
-    updateStats();
-
-}
-
-
-// =================================
-// 6. ADD NEW TASK
-// =================================
-
-taskForm.addEventListener("submit", (event) => {
-
-    event.preventDefault();
-
-    const title = taskInput.value.trim();
-
-    if (!title) return;
-
-    const newTask = {
-
-        id: Date.now(),
-
-        title: title,
-
-        completed: false
-
-    };
-
-    tasks.push(newTask);
-
-    saveTasks();
-
-    renderTasks();
-
-    taskInput.value = "";
-
-    taskInput.focus();
-
+themeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+  const isDark = document.body.classList.contains("dark");
+  themeToggle.textContent = isDark ? "☀" : "☾";
+  localStorage.setItem("gitNotesTheme", isDark ? "dark" : "light");
 });
 
+// Save completed lessons and update progress.
+const lessonChecks = [...document.querySelectorAll(".lesson-check")];
+const savedProgress = JSON.parse(localStorage.getItem("gitNotesProgress") || "[]");
 
-// =================================
-// 7. COMPLETE / UNCOMPLETE TASK
-// =================================
-
-function toggleTask(id) {
-
-    tasks = tasks.map(task => {
-
-        if (task.id === id) {
-
-            return {
-
-                ...task,
-
-                completed: !task.completed
-
-            };
-
-        }
-
-        return task;
-
-    });
-
-    saveTasks();
-
-    renderTasks();
-
-}
-
-
-// =================================
-// 8. EDIT TASK
-// =================================
-
-function editTask(id) {
-
-    const task = tasks.find(
-        task => task.id === id
-    );
-
-    if (!task) return;
-
-    const newTitle = prompt(
-        "Edit your task:",
-        task.title
-    );
-
-    if (newTitle === null) return;
-
-    const updatedTitle = newTitle.trim();
-
-    if (!updatedTitle) {
-
-        alert("Task title cannot be empty!");
-
-        return;
-
-    }
-
-    if (updatedTitle.length > 100) {
-
-        alert("Maximum 100 characters allowed!");
-
-        return;
-
-    }
-
-    task.title = updatedTitle;
-
-    saveTasks();
-
-    renderTasks();
-
-}
-
-
-// =================================
-// 9. DELETE TASK
-// =================================
-
-function deleteTask(id) {
-
-    const confirmed = confirm(
-        "Are you sure you want to delete this task?"
-    );
-
-    if (!confirmed) return;
-
-    tasks = tasks.filter(
-        task => task.id !== id
-    );
-
-    saveTasks();
-
-    renderTasks();
-
-}
-
-
-// =================================
-// 10. CLEAR ALL TASKS
-// =================================
-
-clearAllBtn.addEventListener("click", () => {
-
-    if (tasks.length === 0) {
-
-        alert("There are no tasks to clear!");
-
-        return;
-
-    }
-
-    const confirmed = confirm(
-        "Are you sure you want to delete all tasks?"
-    );
-
-    if (!confirmed) return;
-
-    tasks = [];
-
-    saveTasks();
-
-    renderTasks();
-
+lessonChecks.forEach((checkbox, index) => {
+  checkbox.checked = savedProgress.includes(index);
+  checkbox.addEventListener("change", saveProgress);
 });
 
+function saveProgress() {
+  const completed = lessonChecks
+    .map((checkbox, index) => checkbox.checked ? index : null)
+    .filter(index => index !== null);
 
-// =================================
-// 11. SEARCH TASKS
-// =================================
+  localStorage.setItem("gitNotesProgress", JSON.stringify(completed));
+  const percent = (completed.length / lessonChecks.length) * 100;
+  document.getElementById("progressBar").style.width = `${percent}%`;
+  document.getElementById("progressText").textContent =
+    `${completed.length} of ${lessonChecks.length} lessons completed`;
+}
+saveProgress();
 
-searchInput.addEventListener("input", () => {
-
-    renderTasks();
-
+// Copy commands to clipboard.
+document.querySelectorAll(".copy-btn").forEach(button => {
+  button.addEventListener("click", async () => {
+    const text = button.dataset.copy;
+    try {
+      await navigator.clipboard.writeText(text);
+      showToast("Command copied!");
+    } catch {
+      showToast("Copy unavailable — select the command manually.");
+    }
+  });
 });
 
+let toastTimer;
+function showToast(message) {
+  toast.textContent = message;
+  toast.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove("show"), 1800);
+}
 
-// =================================
-// 12. FILTER TASKS
-// =================================
+// Active sidebar link while scrolling.
+const sections = [...document.querySelectorAll(".lesson-card, #quiz")];
+const sideLinks = [...document.querySelectorAll(".side-link")];
 
-filterSelect.addEventListener("change", () => {
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      sideLinks.forEach(link => link.classList.toggle(
+        "active",
+        link.getAttribute("href") === `#${entry.target.id}`
+      ));
+    }
+  });
+}, { rootMargin: "-20% 0px -70% 0px" });
+sections.forEach(section => observer.observe(section));
 
-    renderTasks();
+// Beginner quiz.
+const questions = [
+  {
+    question: "What is Git?",
+    options: ["A programming language", "A Version Control System", "A web browser", "A database"],
+    answer: 1,
+    explanation: "Git is a Distributed Version Control System used to track changes in files."
+  },
+  {
+    question: "Which command creates a new Git repository?",
+    options: ["git start", "git create", "git init", "git run"],
+    answer: 2,
+    explanation: "git init initializes a new repository in the current folder."
+  },
+  {
+    question: "What does git add . do?",
+    options: ["Deletes all files", "Stages all changes", "Uploads to GitHub", "Creates a branch"],
+    answer: 1,
+    explanation: "git add . stages the changes in the current directory."
+  },
+  {
+    question: "Which command records a snapshot of staged changes?",
+    options: ["git push", "git status", "git commit", "git clone"],
+    answer: 2,
+    explanation: "git commit records staged changes in the local repository."
+  },
+  {
+    question: "What is a Git branch used for?",
+    options: ["A separate line of development", "Deleting a repository", "Changing your password", "Installing Git"],
+    answer: 0,
+    explanation: "A branch lets you work on a feature separately from another branch."
+  }
+];
 
+let currentQuestion = 0;
+let score = 0;
+let answered = false;
+
+const questionCount = document.getElementById("questionCount");
+const questionText = document.getElementById("questionText");
+const answerOptions = document.getElementById("answerOptions");
+const quizFeedback = document.getElementById("quizFeedback");
+const nextQuestion = document.getElementById("nextQuestion");
+const quizResult = document.getElementById("quizResult");
+const quizArea = document.getElementById("quizArea");
+
+function renderQuestion() {
+  const item = questions[currentQuestion];
+  answered = false;
+  questionCount.textContent = `QUESTION ${currentQuestion + 1} / ${questions.length}`;
+  questionText.textContent = item.question;
+  answerOptions.innerHTML = "";
+  quizFeedback.textContent = "";
+  nextQuestion.disabled = true;
+  nextQuestion.textContent = currentQuestion === questions.length - 1
+    ? "See my result →"
+    : "Next question →";
+
+  item.options.forEach((option, index) => {
+    const button = document.createElement("button");
+    button.className = "answer-option";
+    button.textContent = `${String.fromCharCode(65 + index)}. ${option}`;
+    button.addEventListener("click", () => chooseAnswer(index, button));
+    answerOptions.appendChild(button);
+  });
+}
+
+function chooseAnswer(index, selectedButton) {
+  if (answered) return;
+  answered = true;
+
+  const item = questions[currentQuestion];
+  const options = [...answerOptions.children];
+  options.forEach(button => button.disabled = true);
+
+  if (index === item.answer) {
+    score++;
+    selectedButton.classList.add("correct");
+    quizFeedback.textContent = `✓ Correct! ${item.explanation}`;
+  } else {
+    selectedButton.classList.add("wrong");
+    options[item.answer].classList.add("correct");
+    quizFeedback.textContent = `Not quite. ${item.explanation}`;
+  }
+  document.getElementById("quizScore").textContent = `SCORE: ${score}`;
+  nextQuestion.disabled = false;
+}
+
+nextQuestion.addEventListener("click", () => {
+  if (!answered) return;
+
+  currentQuestion++;
+  if (currentQuestion < questions.length) {
+    renderQuestion();
+    return;
+  }
+
+  quizArea.classList.add("hidden");
+  quizResult.classList.remove("hidden");
+  const message = score === 5 ? "Excellent work!" :
+    score >= 3 ? "Good effort — keep practicing!" : "Keep learning and try again!";
+  quizResult.innerHTML = `<strong>${score}/${questions.length}</strong><h3>${message}</h3><p>Review the lessons and test yourself again.</p><button class="btn btn-primary" id="retryQuiz">Try again ↻</button>`;
+  document.getElementById("retryQuiz").addEventListener("click", resetQuiz);
 });
 
+function resetQuiz() {
+  currentQuestion = 0;
+  score = 0;
+  quizArea.classList.remove("hidden");
+  quizResult.classList.add("hidden");
+  document.getElementById("quizScore").textContent = "";
+  renderQuestion();
+}
 
-// =================================
-// 13. INITIALIZE APPLICATION
-// =================================
-
-renderTasks();
-
-console.log("Student Task Manager is running!");
+renderQuestion();

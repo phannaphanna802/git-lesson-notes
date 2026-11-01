@@ -1,103 +1,180 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="km">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Student Task Manager</title>
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Beautiful bilingual Khmer-English Git study notes for beginners.">
+  <title>Git Notes — Learn Git Step by Step</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <header class="topbar">
+    <a class="brand" href="#home"><span class="brand-mark">G</span><span>Git<span class="brand-light">Notes</span></span></a>
+    <nav class="top-links">
+      <a href="#lessons">Lessons</a><a href="#commands">Commands</a><a href="#quiz">Quiz</a>
+    </nav>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">☾</button>
+  </header>
 
-    <div class="container">
-
-        <header class="header">
-            <div>
-                <h1>My Tasks 📚</h1>
-                <p>Manage your student activities.</p>
-            </div>
-            <span class="logo">STM</span>
-        </header>
-
-        <!-- Add Task -->
-        <form id="taskForm" class="task-form">
-
-            <input
-                type="text"
-                id="taskInput"
-                placeholder="Enter a new task..."
-                maxlength="100"
-                required
-            >
-
-            <button type="submit" class="add-btn">
-                + Add Task
-            </button>
-
-        </form>
-
-        <!-- Statistics -->
-        <div class="stats">
-
-            <div class="stat-card">
-                <span>Total Tasks</span>
-                <h2 id="total">0</h2>
-            </div>
-
-            <div class="stat-card">
-                <span>Completed</span>
-                <h2 id="completedCount">0</h2>
-            </div>
-
-            <div class="stat-card">
-                <span>Pending</span>
-                <h2 id="pending">0</h2>
-            </div>
-
+  <main id="home">
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow"><span class="dot"></span> BEGINNER FRIENDLY · KHMER + ENGLISH</span>
+        <h1>Learn Git.<br><span>Track every change.</span></h1>
+        <p class="hero-desc">មេរៀន Git សម្រាប់អ្នកចាប់ផ្ដើមរៀន Programming។ រៀនពីមូលដ្ឋាន រហូតដល់ការធ្វើការជាក្រុមជាមួយ GitHub។</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#lessons">Start learning <span>→</span></a>
+          <a class="btn btn-ghost" href="#commands">Explore commands</a>
         </div>
+        <div class="hero-meta"><span>📘 8 learning sections</span><span>⌨️ Practical commands</span><span>🧠 Quick quiz</span></div>
+      </div>
+      <div class="hero-art" aria-label="Git workflow illustration">
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="git-logo">git<span>•</span></div>
+        <div class="float-card card-commit"><b>✓</b><span><strong>Commit saved</strong><small>Update login page</small></span></div>
+        <div class="float-card card-branch"><b>⑂</b><span><strong>New branch</strong><small>feature-login</small></span></div>
+        <div class="float-card card-push"><b>↑</b><span><strong>Push to GitHub</strong><small>main · synced</small></span></div>
+      </div>
+    </section>
 
-        <!-- Search and Filter -->
-        <div class="toolbar">
+    <section class="progress-wrap">
+      <div><span class="section-kicker">YOUR LEARNING JOURNEY</span><strong id="progressText">0 of 8 lessons completed</strong></div>
+      <div class="progress-track"><div id="progressBar"></div></div>
+    </section>
 
-            <input
-                type="text"
-                id="searchInput"
-                placeholder="Search tasks..."
-            >
+    <section class="content-layout" id="lessons">
+      <aside class="sidebar">
+        <div class="side-title">ON THIS PAGE</div>
+        <a class="side-link active" href="#lesson-1">01 · What is Git?</a>
+        <a class="side-link" href="#lesson-2">02 · Version Control</a>
+        <a class="side-link" href="#lesson-3">03 · Git vs GitHub</a>
+        <a class="side-link" href="#lesson-4">04 · Key terminology</a>
+        <a class="side-link" href="#lesson-5">05 · Git workflow</a>
+        <a class="side-link" href="#commands">06 · Basic commands</a>
+        <a class="side-link" href="#lesson-7">07 · Branching</a>
+        <a class="side-link" href="#lesson-8">08 · Teamwork</a>
+        <div class="tip-box"><span>💡 Study tip</span><p>អានមួយផ្នែក រួចសាកល្បងវាយ Command ដោយខ្លួនឯង។</p></div>
+      </aside>
 
-            <select id="filterSelect">
-                <option value="all">All Tasks</option>
-                <option value="completed">Completed</option>
-                <option value="pending">Pending</option>
-            </select>
+      <div class="lessons">
+        <article class="lesson-card" id="lesson-1">
+          <div class="lesson-heading"><span class="number">01</span><div><span class="section-kicker">THE BASICS</span><h2>What is Git?</h2></div><label class="check-label"><input class="lesson-check" type="checkbox"> Done</label></div>
+          <p><strong>Git</strong> គឺជា <em>Distributed Version Control System (DVCS)</em> ដែលជួយតាមដានការផ្លាស់ប្ដូររបស់ Source Code និងរក្សាទុកប្រវត្តិនៃ Project។</p>
+          <div class="callout"><b>និយាយឱ្យងាយយល់៖</b> Git ដូចជាប្រព័ន្ធ Save ប្រវត្តិការងាររបស់អ្នក។ ប្រសិនបើកែ Code ខុស អ្នកអាចពិនិត្យ ឬត្រឡប់ទៅ Version មុនបាន។</div>
+          <h3>Why do developers use Git?</h3>
+          <div class="feature-grid">
+            <div class="feature"><span>🕘</span><b>Track history</b><small>តាមដានការកែប្រែ Code</small></div>
+            <div class="feature"><span>↩️</span><b>Restore changes</b><small>អាចត្រឡប់ទៅ Version ចាស់</small></div>
+            <div class="feature"><span>👥</span><b>Work together</b><small>សហការជាមួយ Developer ផ្សេងៗ</small></div>
+            <div class="feature"><span>🌿</span><b>Develop safely</b><small>បង្កើត Branch សម្រាប់ Feature ថ្មី</small></div>
+          </div>
+        </article>
 
-        </div>
+        <article class="lesson-card" id="lesson-2">
+          <div class="lesson-heading"><span class="number">02</span><div><span class="section-kicker">CORE CONCEPT</span><h2>Version Control System (VCS)</h2></div><label class="check-label"><input class="lesson-check" type="checkbox"> Done</label></div>
+          <p><strong>VCS</strong> គឺជាប្រព័ន្ធសម្រាប់គ្រប់គ្រង និងតាមដាន Version ផ្សេងៗរបស់ File ឬ Project។</p>
+          <div class="table-wrap"><table><thead><tr><th>Type</th><th>Explanation</th></tr></thead><tbody>
+            <tr><td>Local VCS</td><td>រក្សាប្រវត្តិនៅក្នុង Computer មួយ។</td></tr>
+            <tr><td>Centralized VCS</td><td>មាន Server កណ្ដាលសម្រាប់រក្សាទុក Version។</td></tr>
+            <tr><td>Distributed VCS</td><td>អ្នកអភិវឌ្ឍន៍ម្នាក់ៗមាន Repository ចម្លងពេញលេញ។ Git ជាប្រភេទនេះ។</td></tr>
+          </tbody></table></div>
+        </article>
 
-        <!-- Task List -->
-        <div class="task-section">
+        <article class="lesson-card" id="lesson-3">
+          <div class="lesson-heading"><span class="number">03</span><div><span class="section-kicker">IMPORTANT DIFFERENCE</span><h2>Git vs GitHub</h2></div><label class="check-label"><input class="lesson-check" type="checkbox"> Done</label></div>
+          <p>Git និង GitHub មានទំនាក់ទំនងគ្នា ប៉ុន្តែមិនមែនជារបស់តែមួយទេ។</p>
+          <div class="compare-grid">
+            <div class="compare-card"><div class="compare-icon">◆</div><h3>Git</h3><p>Version Control Tool</p><ul><li>គ្រប់គ្រង Version</li><li>ប្រើក្នុង Local Computer</li><li>Commit និង Branch</li></ul></div>
+            <div class="compare-card github"><div class="compare-icon">◉</div><h3>GitHub</h3><p>Online Hosting Platform</p><ul><li>រក្សាទុក Repository Online</li><li>ចែករំលែក Code</li><li>Pull Request និង Collaboration</li></ul></div>
+          </div>
+          <div class="callout purple"><b>Remember:</b> អ្នកអាចប្រើ Git ដោយមិនចាំបាច់មាន GitHub។ GitHub ប្រើ Git ដើម្បីជួយសហការតាម Internet។</div>
+        </article>
 
-            <div class="section-header">
-                <h2>My Task List</h2>
+        <article class="lesson-card" id="lesson-4">
+          <div class="lesson-heading"><span class="number">04</span><div><span class="section-kicker">VOCABULARY</span><h2>Important Git terminology</h2></div><label class="check-label"><input class="lesson-check" type="checkbox"> Done</label></div>
+          <div class="term-grid">
+            <div><b>Repository (Repo)</b><p>កន្លែងផ្ទុក Project និង Commit History។</p></div>
+            <div><b>Commit</b><p>កំណត់ត្រានៃការផ្លាស់ប្ដូរ Code មួយ។</p></div>
+            <div><b>Branch</b><p>សាខាដាច់ដោយឡែកសម្រាប់អភិវឌ្ឍ Feature។</p></div>
+            <div><b>Merge</b><p>បញ្ចូលការផ្លាស់ប្ដូរពី Branch មួយទៅមួយទៀត។</p></div>
+            <div><b>Clone</b><p>ចម្លង Repository ពី Remote មក Local។</p></div>
+            <div><b>Push</b><p>ផ្ញើ Commit ពី Local ទៅ Remote។</p></div>
+            <div><b>Pull</b><p>ទាញ និងបញ្ចូលការផ្លាស់ប្ដូរពី Remote។</p></div>
+            <div><b>Conflict</b><p>ការប៉ះទង្គិចគ្នានៃការកែប្រែ Code។</p></div>
+          </div>
+        </article>
 
-                <button id="clearAllBtn" class="clear-btn">
-                    Clear All
-                </button>
-            </div>
+        <article class="lesson-card" id="lesson-5">
+          <div class="lesson-heading"><span class="number">05</span><div><span class="section-kicker">HOW IT WORKS</span><h2>The Git workflow</h2></div><label class="check-label"><input class="lesson-check" type="checkbox"> Done</label></div>
+          <p>ការងារធម្មតារបស់ Git មាន 3 តំបន់សំខាន់ៗ៖</p>
+          <div class="workflow">
+            <div class="workflow-step"><span>01</span><b>Working Directory</b><small>កន្លែងបង្កើត និងកែប្រែ File</small></div><div class="flow-arrow">→</div>
+            <div class="workflow-step"><span>02</span><b>Staging Area</b><small>ជ្រើសរើស File ត្រៀម Commit</small></div><div class="flow-arrow">→</div>
+            <div class="workflow-step"><span>03</span><b>Repository</b><small>រក្សាទុក Commit History</small></div>
+          </div>
+          <div class="mini-example"><b>Example</b><p>កែ <code>index.html</code> → ប្រើ <code>git add</code> → ប្រើ <code>git commit</code>។</p></div>
+        </article>
 
-            <div id="taskList"></div>
+        <article class="lesson-card" id="commands">
+          <div class="lesson-heading"><span class="number">06</span><div><span class="section-kicker">PRACTICE TIME</span><h2>Basic Git commands</h2></div><label class="check-label"><input class="lesson-check" type="checkbox"> Done</label></div>
+          <p>សាកល្បង Commands ខាងក្រោមក្នុង Terminal។ ចុច Copy ដើម្បីចម្លង Command។</p>
+          <div class="command-list">
+            <div class="command"><div><b>Check Git version</b><small>ពិនិត្យថាបានដំឡើង Git ឬនៅ</small><code>git --version</code></div><button class="copy-btn" data-copy="git --version">Copy</button></div>
+            <div class="command"><div><b>Set your name</b><small>កំណត់ឈ្មោះសម្រាប់ Commit</small><code>git config --global user.name "Your Name"</code></div><button class="copy-btn" data-copy='git config --global user.name "Your Name"'>Copy</button></div>
+            <div class="command"><div><b>Initialize repository</b><small>បង្កើត Git Repository ថ្មី</small><code>git init</code></div><button class="copy-btn" data-copy="git init">Copy</button></div>
+            <div class="command"><div><b>Check status</b><small>មើលស្ថានភាព File</small><code>git status</code></div><button class="copy-btn" data-copy="git status">Copy</button></div>
+            <div class="command"><div><b>Add all changes</b><small>បន្ថែមការផ្លាស់ប្ដូរទៅ Staging Area</small><code>git add .</code></div><button class="copy-btn" data-copy="git add .">Copy</button></div>
+            <div class="command"><div><b>Save a commit</b><small>រក្សាទុកការផ្លាស់ប្ដូរ</small><code>git commit -m "Initial commit"</code></div><button class="copy-btn" data-copy='git commit -m "Initial commit"'>Copy</button></div>
+            <div class="command"><div><b>View commit history</b><small>មើលប្រវត្តិ Commit</small><code>git log --oneline</code></div><button class="copy-btn" data-copy="git log --oneline">Copy</button></div>
+          </div>
+        </article>
 
-        </div>
+        <article class="lesson-card" id="lesson-7">
+          <div class="lesson-heading"><span class="number">07</span><div><span class="section-kicker">WORK IN PARALLEL</span><h2>Branching and merging</h2></div><label class="check-label"><input class="lesson-check" type="checkbox"> Done</label></div>
+          <p><strong>Branch</strong> អនុញ្ញាតឱ្យអ្នកអភិវឌ្ឍ Feature ថ្មី ដោយមិនប៉ះពាល់ Branch សំខាន់ភ្លាមៗ។</p>
+          <div class="branch-diagram"><div class="branch-line main-line"><span></span><b>main</b></div><div class="branch-line feature-line"><span></span><b>feature-login</b></div><div class="merge-point">↗ Merge back into main</div></div>
+          <div class="code-block"><code>git branch feature-login
+git switch feature-login
 
-        <footer>
-            <p>Student Task Manager © 2026</p>
-        </footer>
+# Make your changes
+git add .
+git commit -m "Add login feature"
 
-    </div>
+git switch main
+git merge feature-login</code><button class="copy-btn" data-copy="git branch feature-login&#10;git switch feature-login&#10;git add .&#10;git commit -m &quot;Add login feature&quot;&#10;git switch main&#10;git merge feature-login">Copy</button></div>
+        </article>
 
-    <!-- JavaScript -->
-    <script src="script.js"></script>
+        <article class="lesson-card" id="lesson-8">
+          <div class="lesson-heading"><span class="number">08</span><div><span class="section-kicker">COLLABORATION</span><h2>Working with GitHub</h2></div><label class="check-label"><input class="lesson-check" type="checkbox"> Done</label></div>
+          <div class="table-wrap"><table><thead><tr><th>Command</th><th>Meaning</th></tr></thead><tbody>
+            <tr><td><code>git clone URL</code></td><td>ចម្លង Remote Repository មក Local។</td></tr>
+            <tr><td><code>git remote add origin URL</code></td><td>ភ្ជាប់ Local ទៅ Remote Repository។</td></tr>
+            <tr><td><code>git push</code></td><td>ផ្ញើ Commit ទៅ Remote។</td></tr>
+            <tr><td><code>git pull</code></td><td>ទាញ និងបញ្ចូលការផ្លាស់ប្ដូរថ្មី។</td></tr>
+            <tr><td><code>git fetch</code></td><td>ទាញព័ត៌មាន Remote ដោយមិនបញ្ចូលទៅ Branch បច្ចុប្បន្ន។</td></tr>
+          </tbody></table></div>
+          <div class="callout green"><b>Team workflow:</b> បង្កើត Branch → សរសេរ Code → Commit → Push → បង្កើត Pull Request → ពិនិត្យ Code → Merge។</div>
+        </article>
 
+        <section class="quiz-card" id="quiz">
+          <span class="section-kicker">CHECK YOUR KNOWLEDGE</span>
+          <h2>Quick Git quiz</h2>
+          <p class="quiz-intro">សាកល្បងចំណេះដឹងរបស់អ្នក បន្ទាប់ពីរៀនចប់។</p>
+          <div id="quizArea">
+            <div class="quiz-top"><span id="questionCount">QUESTION 1 / 5</span><span id="quizScore"></span></div>
+            <h3 id="questionText"></h3>
+            <div id="answerOptions" class="answer-options"></div>
+            <div id="quizFeedback" class="quiz-feedback" aria-live="polite"></div>
+            <button id="nextQuestion" class="btn btn-primary next-btn" disabled>Next question →</button>
+          </div>
+          <div id="quizResult" class="quiz-result hidden"></div>
+        </section>
+      </div>
+    </section>
+
+    <footer class="footer"><span class="brand-mark">G</span><p>Keep learning. Keep building. Keep committing.</p><a href="#home">Back to top ↑</a></footer>
+  </main>
+  <div class="toast" id="toast" role="status">Copied!</div>
+  <script src="script.js"></script>
 </body>
 </html>
