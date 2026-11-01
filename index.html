@@ -3,142 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Student Task Manager</title>
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-        body {
-            background: #f1f5f9;
-            min-height: 100vh;
-            padding: 40px 15px;
-        }
-
-        .container {
-            max-width: 650px;
-            margin: auto;
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 25px #00000010;
-        }
-
-        h1 {
-            color: #1e293b;
-            margin-bottom: 8px;
-        }
-
-        .subtitle {
-            color: #64748b;
-            margin-bottom: 25px;
-        }
-
-        .task-form {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
-        }
-
-        input {
-            flex: 1;
-            min-width: 0;
-            padding: 13px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            outline: none;
-        }
-
-        input:focus {
-            border-color: #2563eb;
-        }
-
-        button {
-            border: none;
-            padding: 12px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            color: white;
-            background: #2563eb;
-        }
-
-        button:hover {
-            opacity: 0.85;
-        }
-
-        .stats {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 20px;
-            color: #475569;
-            font-size: 14px;
-        }
-
-        .task {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            padding: 15px;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            margin-bottom: 10px;
-        }
-
-        .task-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            overflow-wrap: anywhere;
-        }
-
-        .task input {
-            flex: none;
-            width: 17px;
-            height: 17px;
-        }
-
-        .completed {
-            text-decoration: line-through;
-            color: #94a3b8;
-        }
-
-        .delete-btn {
-            background: #ef4444;
-            flex-shrink: 0;
-        }
-
-        .empty {
-            text-align: center;
-            color: #94a3b8;
-            padding: 30px 0;
-        }
-
-        @media (max-width: 450px) {
-            .container {
-                padding: 20px;
-            }
-
-            .task-form {
-                flex-direction: column;
-            }
-        }
-    </style>
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
     <div class="container">
 
-        <h1>My Tasks 📚</h1>
-        <p class="subtitle">Manage your student activities.</p>
+        <header class="header">
+            <div>
+                <h1>My Tasks 📚</h1>
+                <p>Manage your student activities.</p>
+            </div>
+            <span class="logo">STM</span>
+        </header>
 
-        <form class="task-form" id="taskForm">
+        <!-- Add Task -->
+        <form id="taskForm" class="task-form">
+
             <input
                 type="text"
                 id="taskInput"
@@ -147,126 +32,72 @@
                 required
             >
 
-            <button type="submit">+ Add Task</button>
+            <button type="submit" class="add-btn">
+                + Add Task
+            </button>
+
         </form>
 
+        <!-- Statistics -->
         <div class="stats">
-            <span>Total: <strong id="total">0</strong></span>
-            <span>Completed: <strong id="completedCount">0</strong></span>
-            <span>Pending: <strong id="pending">0</strong></span>
+
+            <div class="stat-card">
+                <span>Total Tasks</span>
+                <h2 id="total">0</h2>
+            </div>
+
+            <div class="stat-card">
+                <span>Completed</span>
+                <h2 id="completedCount">0</h2>
+            </div>
+
+            <div class="stat-card">
+                <span>Pending</span>
+                <h2 id="pending">0</h2>
+            </div>
+
         </div>
 
-        <div id="taskList"></div>
+        <!-- Search and Filter -->
+        <div class="toolbar">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search tasks..."
+            >
+
+            <select id="filterSelect">
+                <option value="all">All Tasks</option>
+                <option value="completed">Completed</option>
+                <option value="pending">Pending</option>
+            </select>
+
+        </div>
+
+        <!-- Task List -->
+        <div class="task-section">
+
+            <div class="section-header">
+                <h2>My Task List</h2>
+
+                <button id="clearAllBtn" class="clear-btn">
+                    Clear All
+                </button>
+            </div>
+
+            <div id="taskList"></div>
+
+        </div>
+
+        <footer>
+            <p>Student Task Manager © 2026</p>
+        </footer>
 
     </div>
 
-    <script>
-        const taskForm = document.getElementById("taskForm");
-        const taskInput = document.getElementById("taskInput");
-        const taskList = document.getElementById("taskList");
-
-        let tasks = JSON.parse(
-            localStorage.getItem("studentTasks") || "[]"
-        );
-
-        // Save tasks
-        function saveTasks() {
-            localStorage.setItem(
-                "studentTasks",
-                JSON.stringify(tasks)
-            );
-        }
-
-        // Display tasks
-        function renderTasks() {
-            taskList.innerHTML = "";
-
-            tasks.forEach((task) => {
-                const item = document.createElement("div");
-                item.className = "task";
-
-                const info = document.createElement("div");
-                info.className = "task-info";
-
-                const checkbox = document.createElement("input");
-                checkbox.type = "checkbox";
-                checkbox.checked = task.completed;
-
-                const title = document.createElement("span");
-                title.textContent = task.title;
-
-                if (task.completed) {
-                    title.classList.add("completed");
-                }
-
-                checkbox.addEventListener("change", () => {
-                    task.completed = checkbox.checked;
-                    saveTasks();
-                    renderTasks();
-                });
-
-                info.append(checkbox, title);
-
-                const deleteButton = document.createElement("button");
-                deleteButton.textContent = "Delete";
-                deleteButton.className = "delete-btn";
-
-                deleteButton.addEventListener("click", () => {
-                    tasks = tasks.filter(
-                        t => t.id !== task.id
-                    );
-
-                    saveTasks();
-                    renderTasks();
-                });
-
-                item.append(info, deleteButton);
-                taskList.appendChild(item);
-            });
-
-            document.getElementById("total").textContent =
-                tasks.length;
-
-            const completed = tasks.filter(
-                task => task.completed
-            ).length;
-
-            document.getElementById("completedCount").textContent =
-                completed;
-
-            document.getElementById("pending").textContent =
-                tasks.length - completed;
-
-            if (tasks.length === 0) {
-                taskList.innerHTML =
-                    '<p class="empty">No tasks yet. Add your first task!</p>';
-            }
-        }
-
-        // Add new task
-        taskForm.addEventListener("submit", (event) => {
-            event.preventDefault();
-
-            const title = taskInput.value.trim();
-
-            if (!title) return;
-
-            tasks.push({
-                id: Date.now(),
-                title: title,
-                completed: false
-            });
-
-            saveTasks();
-            renderTasks();
-
-            taskInput.value = "";
-            taskInput.focus();
-        });
-
-        // Initial display
-        renderTasks();
-    </script>
+    <!-- JavaScript -->
+    <script src="script.js"></script>
 
 </body>
 </html>

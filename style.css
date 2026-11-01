@@ -1,0 +1,340 @@
+/* =========================
+   1. GLOBAL SETTINGS
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f1f5f9;
+    min-height: 100vh;
+    padding: 40px 20px;
+    color: #1e293b;
+}
+
+/* =========================
+   2. MAIN CONTAINER
+========================= */
+
+.container {
+    max-width: 750px;
+    margin: auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 16px;
+
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.06);
+}
+
+/* =========================
+   3. HEADER
+========================= */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    font-size: 28px;
+    color: #1e293b;
+    margin-bottom: 8px;
+}
+
+.header p {
+    color: #64748b;
+    font-size: 14px;
+}
+
+.logo {
+    background: #2563eb;
+    color: white;
+    padding: 15px;
+    border-radius: 12px;
+    font-weight: bold;
+}
+
+/* =========================
+   4. INPUTS
+========================= */
+
+input,
+select {
+    width: 100%;
+    padding: 13px 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+    outline: none;
+    font-size: 14px;
+    background: white;
+}
+
+input:focus,
+select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* =========================
+   5. BUTTONS
+========================= */
+
+button {
+    border: none;
+    cursor: pointer;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+button:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+.add-btn {
+    background: #2563eb;
+    color: white;
+    padding: 13px 20px;
+    white-space: nowrap;
+}
+
+/* =========================
+   6. TASK FORM
+========================= */
+
+.task-form {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+/* =========================
+   7. STATISTICS
+========================= */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.stat-card {
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+.stat-card span {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.stat-card h2 {
+    margin-top: 10px;
+    font-size: 26px;
+    color: #2563eb;
+}
+
+/* =========================
+   8. SEARCH AND FILTER
+========================= */
+
+.toolbar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.toolbar select {
+    max-width: 150px;
+}
+
+/* =========================
+   9. TASK SECTION
+========================= */
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.section-header h2 {
+    font-size: 19px;
+}
+
+.clear-btn {
+    padding: 9px 13px;
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+/* =========================
+   10. TASK ITEM
+========================= */
+
+.task {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    padding: 16px;
+    margin-bottom: 12px;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 11px;
+
+    transition: 0.2s ease;
+}
+
+.task:hover {
+    border-color: #93c5fd;
+    background: #f8fbff;
+}
+
+.task-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+}
+
+.task-info input {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.task-title {
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+.completed {
+    text-decoration: line-through;
+    color: #94a3b8;
+}
+
+/* =========================
+   11. TASK ACTIONS
+========================= */
+
+.task-actions {
+    display: flex;
+    gap: 7px;
+    flex-shrink: 0;
+}
+
+.edit-btn {
+    background: #dbeafe;
+    color: #2563eb;
+    padding: 9px 12px;
+}
+
+.delete-btn {
+    background: #fee2e2;
+    color: #dc2626;
+    padding: 9px 12px;
+}
+
+/* =========================
+   12. EMPTY MESSAGE
+========================= */
+
+.empty {
+    text-align: center;
+    color: #94a3b8;
+    padding: 35px 10px;
+    background: #f8fafc;
+    border-radius: 10px;
+}
+
+/* =========================
+   13. FOOTER
+========================= */
+
+footer {
+    text-align: center;
+    margin-top: 30px;
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+/* =========================
+   14. RESPONSIVE DESIGN
+========================= */
+
+@media (max-width: 550px) {
+
+    body {
+        padding: 20px 10px;
+    }
+
+    .container {
+        padding: 20px 15px;
+    }
+
+    .header h1 {
+        font-size: 23px;
+    }
+
+    .task-form {
+        flex-direction: column;
+    }
+
+    .stats {
+        gap: 8px;
+    }
+
+    .stat-card {
+        padding: 12px 8px;
+    }
+
+    .stat-card span {
+        font-size: 11px;
+    }
+
+    .stat-card h2 {
+        font-size: 21px;
+    }
+
+    .toolbar {
+        flex-direction: column;
+    }
+
+    .toolbar select {
+        max-width: 100%;
+    }
+
+    .task {
+        padding: 12px 9px;
+    }
+
+    .task-actions {
+        gap: 5px;
+    }
+
+    .edit-btn,
+    .delete-btn {
+        padding: 8px;
+        font-size: 12px;
+    }
+}
